@@ -5,6 +5,7 @@ const LogoutBtn = () => {
   const navigate = useNavigate();
   const hadleLogout = () => {
     removeCookie("token");
+    removeCookie("user");
     navigate("/");
   };
 

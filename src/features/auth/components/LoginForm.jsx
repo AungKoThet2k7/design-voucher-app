@@ -4,11 +4,12 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import useCookie from "react-use-cookie";
 import { Login } from "../../../services/auth";
+import BtnSpinner from "../../../components/BtnSpinner";
 
 const LoginForm = () => {
   const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm();
 
   const [token, setToken] = useCookie("token");
 
@@ -89,10 +90,12 @@ const LoginForm = () => {
       </div>
       <button
         type="submit"
+        disabled={isSubmitting}
         onClick={handleSubmit(handleLogin)}
-        className="w-full text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        className="w-full flex justify-center items-center gap-3 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       >
         Sign in
+        {isSubmitting && <BtnSpinner />}
       </button>
       <p className="text-sm font-light text-gray-500">
         Don't have an account yet?{" "}

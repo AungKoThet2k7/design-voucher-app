@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import useCookie from "react-use-cookie";
 import Container from "../../../components/Container";
 import { storeProducts } from "../../../services/product";
+import BtnSpinner from "../../../components/BtnSpinner";
 
 lineSpinner.register();
 
@@ -16,7 +17,7 @@ const ProductCreateCard = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm();
 
@@ -171,24 +172,18 @@ const ProductCreateCard = () => {
 
             <div className="flex gap-3">
               <Link
-                to={"/dashboard/product"}
+                to={"/dashboard/products"}
                 className="px-4 py-2  text-sm font-medium text-sky-500 bg-white rounded-lg border border-sky-500 hover:bg-sky-700 hover:text-white"
               >
                 Cancel
               </Link>
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="px-4 py-2 flex items-center gap-1 text-sm font-medium text-white bg-sky-500 rounded-lg border border-sky-500 hover:bg-sky-700"
               >
                 Create Product
-                {isSending && (
-                  <l-line-spinner
-                    size="18"
-                    stroke="1"
-                    speed="1"
-                    color="white"
-                  ></l-line-spinner>
-                )}
+                {isSubmitting && <BtnSpinner />}
               </button>
             </div>
           </form>

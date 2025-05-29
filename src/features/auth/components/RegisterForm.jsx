@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { Register } from "../../../services/auth";
+import BtnSpinner from "../../../components/BtnSpinner";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -10,12 +11,10 @@ const RegisterForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { isSubmitting },
   } = useForm();
 
   const handleRegister = async (data) => {
-    console.log(data);
-
     const res = await Register(data);
 
     const json = await res.json();
@@ -111,10 +110,12 @@ const RegisterForm = () => {
       </div>
       <button
         type="submit"
+        disabled={isSubmitting}
         onClick={handleSubmit(handleRegister)}
-        className="w-full text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        className="w-full flex gap-3 justify-center items-center text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       >
         Create an account
+        {isSubmitting && <BtnSpinner />}
       </button>
       <p className="text-sm font-light text-gray-500">
         Already have an account?{" "}

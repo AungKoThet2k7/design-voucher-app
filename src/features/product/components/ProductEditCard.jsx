@@ -8,6 +8,7 @@ import useSWR, { useSWRConfig } from "swr";
 import useCookie from "react-use-cookie";
 import Container from "../../../components/Container";
 import { fetchProducts, updateProduct } from "../../../services/product";
+import BtnSpinner from "../../../components/BtnSpinner";
 
 lineSpinner.register();
 
@@ -15,11 +16,9 @@ const ProductEditCard = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm();
-
-  const [isSending, setIsSending] = useState(false);
 
   const navigate = useNavigate();
 
@@ -37,14 +36,11 @@ const ProductEditCard = () => {
   // console.log(data);
 
   const productUpdatehandler = async (data) => {
-    setIsSending(true);
     const res = await updateProduct(id, data.product_name, data.price);
 
     const json = await res.json();
 
     mutate(import.meta.env.VITE_API_URL + `/products/${id}`);
-
-    setIsSending(false);
 
     if (data.back_to_product) {
       navigate("/dashboard/products");
@@ -57,7 +53,6 @@ const ProductEditCard = () => {
     } else {
       toast.error(json.message);
     }
-    // console.log(data);
   };
   return (
     <section>
@@ -222,17 +217,11 @@ const ProductEditCard = () => {
                 </Link>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="px-4 py-2 flex items-center gap-1 text-sm font-medium text-white bg-sky-500 rounded-lg border border-sky-500 hover:bg-sky-700"
                 >
                   Edit Product
-                  {isSending && (
-                    <l-line-spinner
-                      size="18"
-                      stroke="1"
-                      speed="1"
-                      color="white"
-                    ></l-line-spinner>
-                  )}
+                  {isSubmitting && <BtnSpinner />}
                 </button>
               </div>
             </form>

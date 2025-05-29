@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useCookie from "react-use-cookie";
 
 const Header = () => {
+  const [user] = useCookie("user");
+
   return (
     <header>
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 fixed w-full z-20">
@@ -17,18 +20,29 @@ const Header = () => {
             </span>
           </a>
           <div className="flex items-center lg:order-2">
-            <Link
-              to={"/login"}
-              className="text-gray-800 dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-            >
-              Log in
-            </Link>
-            <a
-              href="#"
-              className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-sky-400 dark:hover:bg-sky-500 focus:outline-none dark:focus:ring-sky-600"
-            >
-              Get started
-            </a>
+            {user ? (
+              <Link
+                to={"/dashboard"}
+                className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-sky-400 dark:hover:bg-sky-500 focus:outline-none dark:focus:ring-sky-600"
+              >
+                <span>{JSON.parse(user).name}'s </span>Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to={"/login"}
+                  className="text-gray-800 dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to={"/register"}
+                  className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-sky-400 dark:hover:bg-sky-500 focus:outline-none dark:focus:ring-sky-600"
+                >
+                  Get started
+                </Link>
+              </>
+            )}
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
