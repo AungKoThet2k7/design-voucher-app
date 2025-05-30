@@ -8,7 +8,6 @@ export const fetchVouchers = (url) =>
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
-
 export const deleteVoucher = (id) => {
   return fetch(import.meta.env.VITE_API_URL + `/vouchers/${id}`, {
     method: "DELETE",
@@ -16,5 +15,16 @@ export const deleteVoucher = (id) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  });
+};
+
+export const storeVoucher = (currrentVoucher) => {
+  return fetch(import.meta.env.VITE_API_URL + "/vouchers", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(currrentVoucher),
   });
 };

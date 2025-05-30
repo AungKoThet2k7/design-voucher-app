@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const useRecordStore = create((set) => ({
+const useSaleProductStore = create((set) => ({
   records: [],
   addRecord: (record) => {
     set((state) => ({ records: [...state.records, record] }));
@@ -30,4 +30,4 @@ const useRecordStore = create((set) => ({
   resetRecords: () => set({ records: [] }),
 }));
 
-export default useRecordStore;
+export default useSaleProductStore;
