@@ -2,7 +2,7 @@ import DashboardLayout from "../features/dashboard/components/DashboardLayout";
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
 import productRoute from "./productRoute";
 import saleRoute from "./saleRoute";
-import userProfileRoute from "./user-profileRoute";
+import userProfileRoute from "./userProfileRoute";
 import voucherRoute from "./voucherRoute";
 
 const dashboardRoute = [
