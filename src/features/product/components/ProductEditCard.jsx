@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-
+import { Link } from "react-router-dom";
 import { lineSpinner } from "ldrs";
-import toast from "react-hot-toast";
-import useSWR, { useSWRConfig } from "swr";
-import useCookie from "react-use-cookie";
 import Container from "../../../components/Container";
-import { fetchProducts, updateProduct } from "../../../services/product";
 import BtnSpinner from "../../../components/BtnSpinner";
+import useProductEdit from "../hooks/useProductEdit";
 
 lineSpinner.register();
 
@@ -16,44 +10,13 @@ const ProductEditCard = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm();
+    errors,
+    isSubmitting,
+    data,
+    isLoading,
+    productUpdatehandler,
+  } = useProductEdit();
 
-  const navigate = useNavigate();
-
-  const { mutate } = useSWRConfig();
-
-  const { id } = useParams();
-
-  const { data, isLoading, error } = useSWR(
-    import.meta.env.VITE_API_URL + `/products/${id}`,
-    fetchProducts
-  );
-
-  // if (isLoading) return <div>Loading...</div>;
-
-  // console.log(data);
-
-  const productUpdatehandler = async (data) => {
-    const res = await updateProduct(id, data.product_name, data.price);
-
-    const json = await res.json();
-
-    mutate(import.meta.env.VITE_API_URL + `/products/${id}`);
-
-    if (data.back_to_product) {
-      navigate("/dashboard/products");
-    }
-
-    if (res.status === 200) {
-      toast.success(json.message);
-
-      reset();
-    } else {
-      toast.error(json.message);
-    }
-  };
   return (
     <section>
       <Container>

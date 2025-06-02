@@ -1,55 +1,15 @@
-import React, { useState } from "react";
 import { HiSearch } from "react-icons/hi";
-import useSWR from "swr";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
-
-import { debounce, set } from "lodash";
+import { Link } from "react-router-dom";
 import Pagination from "../../../components/Pagination";
-import { urlToParamObject } from "../../../utils/url";
 import Sortable from "../../../components/Sortable";
 import VoucherRow from "./voucherRow";
 import VoucherLoader from "./voucherLoader";
-import { fetchVouchers } from "../../../services/voucher";
 import VoucherEmptyStage from "./VoucherEmptyStage";
+import useVoucher from "../hooks/useVoucher";
 
 const VoucherTable = () => {
-  const location = useLocation();
-
-  const [params, setParams] = useSearchParams();
-
-  const [fetchUrl, setFetchUrl] = useState(
-    import.meta.env.VITE_API_URL + "/vouchers" + location.search
-  );
-
-  const { data, error, isLoading } = useSWR(fetchUrl, fetchVouchers);
-
-  const handleSearch = debounce((e) => {
-    if (e.target.value) {
-      setParams({ q: e.target.value });
-      setFetchUrl(
-        import.meta.env.VITE_API_URL + `/vouchers?q=${e.target.value}`
-      );
-    } else {
-      setParams({});
-      setFetchUrl(import.meta.env.VITE_API_URL + "/vouchers");
-    }
-  }, 500);
-
-  const updateFetchUrl = (url) => {
-    setParams(urlToParamObject(url));
-    setFetchUrl(url);
-  };
-
-  const handleSort = (sortData) => {
-    const sortParams = new URLSearchParams(sortData).toString();
-    setParams(sortData);
-    setFetchUrl(import.meta.env.VITE_API_URL + `/vouchers?${sortParams}`);
-  };
-
-  // if (isLoading) return <div>Loading...</div>;
-
-  // console.log(data);
-
+  const { data, isLoading, handleSearch, updateFetchUrl, handleSort } =
+    useVoucher();
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -88,7 +48,11 @@ const VoucherTable = () => {
                 </Sortable>
               </th>
               <th scope="col" className="px-6 py-3 text-nowrap">
-                <Sortable handleSort={handleSort} sort_by="customer_name" align="right">
+                <Sortable
+                  handleSort={handleSort}
+                  sort_by="customer_name"
+                  align="right"
+                >
                   Customer Name
                 </Sortable>
               </th>

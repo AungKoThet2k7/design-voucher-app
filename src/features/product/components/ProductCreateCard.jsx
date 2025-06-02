@@ -1,50 +1,15 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-
+import { Link } from "react-router-dom";
 import { lineSpinner } from "ldrs";
-import toast from "react-hot-toast";
-import useCookie from "react-use-cookie";
 import Container from "../../../components/Container";
-import { storeProducts } from "../../../services/product";
 import BtnSpinner from "../../../components/BtnSpinner";
+import useProductCreate from "../hooks/useProductCreate";
 
 lineSpinner.register();
 
 const ProductCreateCard = () => {
-  const [token] = useCookie("token");
+  const { register, handleSubmit, errors, isSubmitting, handleCreateProduct } =
+    useProductCreate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm();
-
-  const [isSending, setIsSending] = useState(false);
-
-  const navigate = useNavigate();
-
-  const handleCreateProduct = async (data) => {
-    setIsSending(true);
-    const res = await storeProducts(data.product_name, data.price);
-
-    const json = await res.json();
-
-    setIsSending(false);
-
-    if (data.back_to_product) {
-      navigate("/dashboard/products");
-    }
-
-    if (res.status === 200 || res.status === 201) {
-      toast.success(json.message);
-      reset();
-    } else {
-      toast.error(json.message);
-    }
-    // console.log(data);
-  };
   return (
     <section>
       <Container>

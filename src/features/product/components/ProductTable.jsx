@@ -1,54 +1,15 @@
-import React, { useState } from "react";
 import { HiSearch } from "react-icons/hi";
-import useSWR from "swr";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
-import useCookie from "react-use-cookie";
-import { debounce, set } from "lodash";
+import { Link } from "react-router-dom";
 import ProductLoader from "./ProductLoader";
 import ProductRow from "./ProductRow";
 import ProductEmptyStage from "./ProductEmptyStage";
-import { fetchProducts } from "../../../services/product";
 import Pagination from "../../../components/Pagination";
-import { urlToParamObject } from "../../../utils/url";
 import Sortable from "../../../components/Sortable";
+import useProduct from "../hooks/useProduct";
 
 const ProductTable = () => {
-  const location = useLocation();
-
-  const [params, setParams] = useSearchParams();
-
-  const [fetchUrl, setFetchUrl] = useState(
-    import.meta.env.VITE_API_URL + "/products" + location.search
-  );
-
-  const { data, error, isLoading } = useSWR(fetchUrl, fetchProducts);
-
-  const handleSearch = debounce((e) => {
-    if (e.target.value) {
-      setParams({ q: e.target.value });
-      setFetchUrl(
-        import.meta.env.VITE_API_URL + `/products?q=${e.target.value}`
-      );
-    } else {
-      setParams({});
-      setFetchUrl(import.meta.env.VITE_API_URL + "/products");
-    }
-  }, 500);
-
-  const updateFetchUrl = (url) => {
-    setParams(urlToParamObject(url));
-    setFetchUrl(url);
-  };
-
-  const handleSort = (sortData) => {
-    const sortParams = new URLSearchParams(sortData).toString();
-    setParams(sortData);
-    setFetchUrl(import.meta.env.VITE_API_URL + `/products?${sortParams}`);
-  };
-
-  // if (isLoading) return <div>Loading...</div>;
-
-  // console.log(data);
+  const { data, isLoading, updateFetchUrl, handleSort, handleSearch } =
+    useProduct();
 
   return (
     <div>
@@ -78,13 +39,19 @@ const ProductTable = () => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-200 ">
             <tr>
               <th scope="col" className="px-6 py-3">
-                <Sortable handleSort={handleSort} sort_by="id">#</Sortable>
+                <Sortable handleSort={handleSort} sort_by="id">
+                  #
+                </Sortable>
               </th>
               <th scope="col" className="px-6 py-3 text-nowrap">
-                <Sortable handleSort={handleSort} sort_by="product_name">Product Name</Sortable>
+                <Sortable handleSort={handleSort} sort_by="product_name">
+                  Product Name
+                </Sortable>
               </th>
               <th scope="col" className="px-6 py-3 text-nowrap">
-                <Sortable handleSort={handleSort} sort_by="price" align="right">Price</Sortable>
+                <Sortable handleSort={handleSort} sort_by="price" align="right">
+                  Price
+                </Sortable>
               </th>
               <th scope="col" className="px-6 py-3 text-nowrap text-end">
                 Created at
@@ -111,11 +78,11 @@ const ProductTable = () => {
         </table>
       </div>
       {/* {!isLoading && ( */}
-        <Pagination
-          links={data?.links}
-          meta={data?.meta}
-          updateFetchUrl={updateFetchUrl}
-        />
+      <Pagination
+        links={data?.links}
+        meta={data?.meta}
+        updateFetchUrl={updateFetchUrl}
+      />
       {/* )} */}
     </div>
   );

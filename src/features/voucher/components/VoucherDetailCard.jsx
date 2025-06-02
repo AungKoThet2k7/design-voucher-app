@@ -1,61 +1,12 @@
-import html2pdf from "html2pdf.js";
-import printJS from "print-js";
-import React from "react";
-import { useParams } from "react-router-dom";
-import useCookie from "react-use-cookie";
-import useSWR from "swr";
+import BtnSpinner from "../../../components/BtnSpinner";
+import useVoucherDetail from "../hooks/useVoucherDetail";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const VoucherDetailCard = () => {
+  const { data, isLoading, handlePdf, handlePrint } = useVoucherDetail();
 
-   const [token] = useCookie("token");
-
-  const fetcher = (url) =>
-    fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((res) => res.json());
-
-  const { id } = useParams();
-
-  const { data, error, isLoading } = useSWR(
-    import.meta.env.VITE_API_URL + "/vouchers/" + id,
-    fetcher
-  );
-
-  
-
-
-  // const { data, isLoading, error } = useSWR(
-  //   import.meta.env.VITE_API_URL + `/vouchers/` + id,
-  //   fetcher
-  // );
-
-  const handlePrint = () => {
-    printJS({
-      printable: "printArea",
-      type: "html",
-      css: "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css", // Load Tailwind
-      scanStyles: false,
-    });
-  };
-
-  const handlePdf = () => {
-    const content = document.querySelector("#printArea");
-
-    html2pdf()
-      .set({
-        margin: 0.5,
-        filename: "voucher.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { orientation: "portrait", unit: "mm", format: "a5" },
-      })
-      .from(content)
-      .save();
-  };
-
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <BtnSpinner />;
 
   return (
     <div className="flex gap-3">
@@ -77,7 +28,9 @@ const VoucherDetailCard = () => {
             <p className="text-sm font-medium text-gray-700">
               {data?.data?.customer_name}
             </p>
-            <p className="text-sm text-gray-600">Date: {data?.data?.sale_date}</p>
+            <p className="text-sm text-gray-600">
+              Date: {data?.data?.sale_date}
+            </p>
           </div>
         </div>
 
