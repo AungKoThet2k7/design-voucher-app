@@ -2,7 +2,6 @@ import { HiChevronLeft, HiChevronRight, HiMiniHome } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
 
 const Breadcrumb = ({ currentpageTitle, links }) => {
-
   const navigate = useNavigate();
 
   return (
@@ -44,11 +43,15 @@ const Breadcrumb = ({ currentpageTitle, links }) => {
       </nav>
       <nav className="flex">
         <button
-        onClick={() => navigate(-1)} className="bg-white hover:bg-sky-200 first:rounded-lg last:rounded-lg first:rounded-r-none last:rounded-l-none border border-gray-500 border-r-0 last:border size-8 flex justify-center items-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50">
+          onClick={() => navigate(-1)}
+          className="bg-white hover:bg-sky-200 first:rounded-lg last:rounded-lg first:rounded-r-none last:rounded-l-none border border-gray-500 border-r-0 last:border size-8 flex justify-center items-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50"
+        >
           <HiChevronLeft />
         </button>
         <button
-         onClick={() => navigate(1)} className="bg-white hover:bg-sky-200 first:rounded-lg last:rounded-lg first:rounded-r-none last:rounded-l-none border border-gray-500 border-r-0 last:border size-8 flex justify-center items-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50">
+          onClick={() => navigate(1)}
+          className="bg-white hover:bg-sky-200 first:rounded-lg last:rounded-lg first:rounded-r-none last:rounded-l-none border border-gray-500 border-r-0 last:border size-8 flex justify-center items-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50"
+        >
           <HiChevronRight />
         </button>
       </nav>

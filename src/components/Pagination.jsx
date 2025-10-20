@@ -44,27 +44,22 @@ const Pagination = ({
         </span>
 
         <div className="flex items-center justify-center gap-3">
-
           <div className=" flex items-center gap-2">
-          <label
-          
-            className="block text-gray-700 text-sm text-nowrap dark:text-white"
-          >
-            Rows per page
-          </label>
-          <select
-            onChange={handleRowLimitSelect}
-            className="flex items-center justify-center h-9 text-sm font-medium border-y border rounded-lg border-gray-200  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:pointer-events-none"
-            value={currentLimit}
-          >
-            {pageLimits.map((limit, index) => (
-              <option key={index} value={limit}>
-                {limit}
-              </option>
-            ))}
-          </select>
-        </div>
-
+            <label className="block text-gray-700 text-sm text-nowrap dark:text-white">
+              Rows per page
+            </label>
+            <select
+              onChange={handleRowLimitSelect}
+              className="flex items-center justify-center h-9 text-sm font-medium border-y border rounded-lg border-gray-200  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:pointer-events-none"
+              value={currentLimit}
+            >
+              {pageLimits.map((limit, index) => (
+                <option key={index} value={limit}>
+                  {limit}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <span className="text-sm text-gray-700">
             Pages <b>{current_page}</b> of <b>{last_page}</b>
